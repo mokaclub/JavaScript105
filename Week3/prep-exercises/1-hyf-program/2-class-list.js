@@ -13,9 +13,39 @@ import { modules, students, mentors, classes } from "./hyf.js";
  */
 const getPeopleOfClass = (className) => {
   // TODO complete this function
+  const selectedClass = classes.find((cls) => cls.name === className);
+  // const selectedClass = {
+  //   name: "class34",
+  //   startDate: "2-9-2021",
+  //   active: true,
+  //   currentModule: "react",
+  // }
+  if (!selectedClass || !selectedClass.active) {
+    return [];
+  }
+  const people = [];
+  // Add students
+  const classStudents = students.filter(
+    (student) => student.class === className
+  );
+  // const classStudents = [{ name: "Rob", class: "class34", gitHubName: "robvk", graduated: false },]
+  classStudents.forEach((student) =>
+    people.push({ name: student.name, role: "student" })
+  );
+    // people = [{ name: "Rob", role: "student" }]
+  // Add mentors
+  mentors.forEach((mentor) => {
+    if (mentor.nowTeaching === selectedClass.currentModule) {
+      people.push({ name: mentor.name, role: "mentor" });
+    }
+  });
+  // people = [{ name: "Rob", role: "student" }, { name: "Shriyans", role: "mentor" }]
+  return people;
+  
+
 };
 // You can uncomment out this line to try your function
-// console.log(getPeopleOfClass('class34'));
+console.log(getPeopleOfClass('class34'));
 
 /**
  * We would like to have a complete overview of the current active classes.
@@ -30,7 +60,15 @@ const getPeopleOfClass = (className) => {
  *  }
  */
 const getActiveClasses = () => {
-  // TODO complete this function
+  const activeClasses = {};
+
+  classes.forEach((cls) => {
+    if (cls.active) {
+      activeClasses[cls.name] = getPeopleOfClass(cls.name);
+    }
+  });
+
+  return activeClasses;
 };
 // You can uncomment out this line to try your function
-// console.log(getActiveClasses());
+ console.log(getActiveClasses());

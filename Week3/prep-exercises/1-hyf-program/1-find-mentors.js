@@ -8,11 +8,23 @@ import { modules, students, mentors, classes } from "./hyf.js";
  *  ['John', 'Mary']
  */
 const possibleMentorsForModule = (moduleName) => {
+
+  // Find mentors who can teach the specified module
+  
+ // const mentorsForModule = mentors.filter(mentor => mentor.canTeach.includes(moduleName));
+
+  // Extract and return the names of mentors
+  //const mentorNames = mentorsForModule.map(mentor => mentor.name);
+
+  //return mentorNames;
+//};
+  
+  return mentors.filter(mentor=>mentor.canTeach.includes(moduleName)).map(mentor=>mentor.name)
   // TODO complete this function
 };
 // You can uncomment out this line to try your function
-// console.log(possibleMentorsForModule('using-apis'));
-
+ console.log(possibleMentorsForModule('using-apis'));
+ console.log(possibleMentorsForModule('browsers'));
 /**
  * Tjebbe wants to make it even easier for himself.
  * Fill in this function that chooses a random mentor to teach the given module.
@@ -20,7 +32,10 @@ const possibleMentorsForModule = (moduleName) => {
  * It should return a single name.
  */
 const findMentorForModule = (moduleName) => {
+ const possibleMentors = possibleMentorsForModule(moduleName)
+ return possibleMentors[Math.floor(Math.random() * possibleMentors.length)];
   // TODO complete this function
 };
 // You can uncomment out this line to try your function
-// console.log(findMentorForModule('javascript'));
+ console.log(findMentorForModule('javascript'));
+ console.log(findMentorForModule('react'));
