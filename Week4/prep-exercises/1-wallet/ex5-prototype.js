@@ -1,8 +1,11 @@
 import eurosFormatter from './euroFormatter.js';
 
+
 function Wallet(name, cash) {
   this._name = name;
   this._cash = cash;
+  this.dailyAllowance = 40;
+  this.dayTotalWithdrawals = 0;
 }
 
 Wallet.prototype.deposit = function (amount) {
@@ -15,7 +18,13 @@ Wallet.prototype.withdraw = function (amount) {
     return 0;
   }
 
+  if (this.dayTotalWithdrawals + amount > this.dailyAllowance) {
+    console.log(`Daily withdrawal limit exceeded!`);
+    return 0;
+  }
+
   this._cash -= amount;
+  this.dayTotalWithdrawals += amount;
   return amount;
 };
 
@@ -26,7 +35,9 @@ Wallet.prototype.transferInto = function (wallet, amount) {
     } to ${wallet.getName()}`
   );
   const withdrawnAmount = this.withdraw(amount);
-  wallet.deposit(withdrawnAmount);
+  if (withdrawnAmount > 0) {
+    wallet.deposit(withdrawnAmount);
+  }
 };
 
 Wallet.prototype.reportBalance = function () {
@@ -37,6 +48,14 @@ Wallet.prototype.reportBalance = function () {
 
 Wallet.prototype.getName = function () {
   return this._name;
+};
+
+Wallet.prototype.resetDailyAllowance = function () {
+  this.dayTotalWithdrawals = 0;
+};
+
+Wallet.prototype.setDailyAllowance = function (newAllowance) {
+  this.dailyAllowance = newAllowance;
 };
 
 function main() {
@@ -56,3 +75,4 @@ function main() {
 }
 
 main();
+
